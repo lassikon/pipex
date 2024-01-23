@@ -1,0 +1,38 @@
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
+
+SOURCES = pipex.c \
+
+NAME = pipex
+HEADER = pipex.h
+BONUS_NAME = checker
+
+LIBFT_DIR = libft
+LDFLAGS = -L$(LIBFT_DIR) -lft
+
+LIBFT_MARKER = .libft
+
+$(LIBFT_MARKER):
+	@$(MAKE) -C $(LIBFT_DIR) > /dev/null
+	@echo "Built libft"
+	touch $(LIBFT_MARKER) > /dev/null
+
+$(NAME): $(LIBFT_MARKER)
+	$(CC) $(CFLAGS) $(SOURCES) $(LDFLAGS) -o $(NAME)
+	@echo "Built pipex"
+
+all: $(NAME)
+
+re: fclean all
+
+clean:
+	@$(MAKE) -C $(LIBFT_DIR) clean > /dev/null
+	@echo "Removed object files"
+
+fclean: clean
+	@$(MAKE) -C $(LIBFT_DIR) fclean > /dev/null
+	rm -f $(LIBFT_MARKER)
+	rm -f $(NAME)
+	@echo "Removed executables"
+
+.PHONY: all re clean fclean bonus
