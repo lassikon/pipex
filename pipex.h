@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:41:35 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/01/24 11:13:19 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/01/24 16:57:20 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <sys/wait.h>
 # include "libft/include/libft.h"
 
-typedef struct s_pip
+typedef struct s_pipex
 {
 	int		fd[2];
 	int		infile;
@@ -31,6 +31,6 @@ typedef struct s_pip
 	char	**paths;
 	char	**cmd1;
 	char	**cmd2;
-}	t_pip;
+}	t_pipex;
 
 #endif
