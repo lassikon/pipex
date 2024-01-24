@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:41:35 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/01/23 14:54:55 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/01/24 11:13:19 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ typedef struct s_pip
 	int		pid_two;
 	int		status;
 	char	**paths;
+	char	**cmd1;
+	char	**cmd2;
 }	t_pip;
 
 #endif

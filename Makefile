@@ -18,7 +18,7 @@ $(LIBFT_MARKER):
 	touch $(LIBFT_MARKER) > /dev/null
 
 $(NAME): $(LIBFT_MARKER)
-	$(CC) $(CFLAGS) $(SOURCES) $(LDFLAGS) -o $(NAME)
+	$(CC) -g $(CFLAGS) $(SOURCES) $(LDFLAGS) -o $(NAME)
 	@echo "Built pipex"
 
 all: $(NAME)
