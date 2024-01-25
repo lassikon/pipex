@@ -1,7 +1,8 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-SOURCES = pipex.c \
+SOURCES =	pipex.c \
+			parsing.c \
 
 NAME = pipex
 HEADER = pipex.h

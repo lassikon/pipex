@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:41:39 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/01/24 17:16:08 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/01/25 12:58:13 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,37 +50,6 @@ void	free_and_exit(t_pipex *p, int error)
 	exit(0);
 }
 
-void	paths(t_pipex *p, char **envp)
-{
-	int		i;
-	char	**paths;
-
-	i = 0;
-	while (*envp)
-	{
-		if (!ft_strncmp(*envp, "PATH", 4))
-		{
-			paths = ft_split(*envp + 5, ':');
-			while (paths[i])
-			{
-				paths[i] = ft_strjoin(paths[i], "/");
-				i++;
-			}
-			p->paths = paths;
-			// free(paths);
-			return ;
-		}
-		envp++;
-	}
-	exit(1);
-}
-
-void	commands(t_pipex *p, char **argv)
-{
-	p->cmd1 = ft_split(argv[2], ' ');
-	p->cmd2 = ft_split(argv[3], ' ');
-}
-
 void	child_one(t_pipex p, char **envp)
 {
 	int		i;
@@ -89,16 +58,14 @@ void	child_one(t_pipex p, char **envp)
 	i = 0;
 	if (dup2(p.infile, STDIN_FILENO) < 0)
 		exit(1);
-	if (dup2(p.fd[1], STDOUT_FILENO) < 0)
+	if (dup2(p.pipe[1], STDOUT_FILENO) < 0)
 		exit(1);
-	close(p.fd[0]);
-	close(p.fd[1]);
-	printf("Hello\n");
+	close(p.pipe[0]);
+	close(p.pipe[1]);
 	while (p.paths[i])
 	{
 		cmd_path = ft_strjoin(p.paths[i], p.cmd1[0]);
-		printf("%s\n", cmd_path);
-		execve(p.paths[i], p.cmd1, envp);
+		execve(cmd_path, p.cmd1, envp);
 		free(cmd_path);
 		i++;
 	}
@@ -111,47 +78,22 @@ void	child_two(t_pipex p, char **envp)
 	char	*cmd_path;
 
 	i = 0;
-	if (dup2(p.fd[0], STDIN_FILENO) < 0)
+	if (dup2(p.pipe[0], STDIN_FILENO) < 0)
 		exit(1);
-	if (dup2(STDOUT_FILENO, p.outfile) < 0)
+	if (dup2(p.outfile, STDOUT_FILENO) < 0)
 		exit(1);
-	close(p.fd[1]);
-	close(p.fd[0]);
+	close(p.pipe[1]);
+	close(p.pipe[0]);
 	while (p.paths[i])
 	{
 		cmd_path = ft_strjoin(p.paths[i], p.cmd2[0]);
-		execve(p.paths[i], p.cmd2, envp);
+		execve(cmd_path, p.cmd2, envp);
 		free(cmd_path);
 		i++;
 	}
 	exit(1);
 }
 
-void	debug(t_pipex *p)
-{
-	int	i;
-
-	i = 0;
-	printf("PATHS\n");
-	while (p->paths[i])
-	{
-		printf("paths[%d]: %s\n", i, p->paths[i]);
-		i++;
-	}
-	printf("\nCOMMANDS\n");
-	i = 0;
-	while (p->cmd1[i])
-	{
-		printf("cmd1[%d]: %s\n", i, p->cmd1[i]);
-		i++;
-	}
-	i = 0;
-	while (p->cmd2[i])
-	{
-		printf("cmd2[%d]: %s\n", i, p->cmd2[i]);
-		i++;
-	}
-}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -161,10 +103,9 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	p.infile = open(argv[1], O_RDONLY);
 	p.outfile = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0644);
-	pipe(p.fd);
+	pipe(p.pipe);
 	paths(&p, envp);
 	commands(&p, argv);
-	debug(&p);
 	p.pid_one = fork();
 	if (p.pid_one == -1)
 		return (1);
@@ -175,8 +116,8 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	if (p.pid_two == 0)
 		child_two(p, envp);
-	close(p.fd[0]);
-	close(p.fd[1]);
+	close(p.pipe[0]);
+	close(p.pipe[1]);
 	waitpid(p.pid_one, &p.status, 0);
 	waitpid(p.pid_two, &p.status, 0);
 	free_and_exit(&p, 0);
