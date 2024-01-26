@@ -1,39 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug.c                                            :+:      :+:    :+:   */
+/*   free_and_error.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/25 12:51:37 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/01/26 14:33:51 by lkonttin         ###   ########.fr       */
+/*   Created: 2024/01/25 13:45:47 by lkonttin          #+#    #+#             */
+/*   Updated: 2024/01/26 15:33:26 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	debug(t_pipex *p)
+void	free_strs(t_pipex *p)
 {
-	int	i;
+	if (p->paths)
+	{
+		while (*p->paths)
+		{
+			free(*p->paths);
+			p->paths++;
+		}
+	}
+	if (p->cmd1)
+	{
+		while (*p->cmd1)
+		{
+			free(*p->cmd1);
+			p->cmd1++;
+		}
+	}
+	if (p->cmd2)
+	{
+		while (*p->cmd2)
+		{
+			free(*p->cmd2);
+			p->cmd2++;
+		}
+	}
+}
 
-	i = 0;
-	printf("PATHS\n");
-	while (p->paths[i])
-	{
-		printf("paths[%d]: %s\n", i, p->paths[i]);
-		i++;
-	}
-	printf("\nCOMMANDS\n");
-	i = 0;
-	while (p->cmd1[i])
-	{
-		printf("cmd1[%d]: %s\n", i, p->cmd1[i]);
-		i++;
-	}
-	i = 0;
-	while (p->cmd2[i])
-	{
-		printf("cmd2[%d]: %s\n", i, p->cmd2[i]);
-		i++;
-	}
+void	handle_perror(char *error, int errcode)
+{
+	perror(error);
+	exit(errcode);
 }

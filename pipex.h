@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:41:35 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/01/25 12:54:18 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/01/26 15:34:32 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,17 @@
 # include <sys/wait.h>
 # include "libft/include/libft.h"
 
+# define ERROR_INFILE "Infile"
+# define ERROR_OUTFILE "Outfile"
+# define ERROR_INPUT "Invalid number of arguments.\n"
+# define ERROR_PIPE "Pipe"
+# define ERROR_CMD "Command not found.\n"
+# define ERROR_FORK "Fork"
+# define ERROR_DUP "Dup2"
+# define ERROR_CLOSE "Close"
+# define ERROR_PATH "Path"
+# define ERROR_MALLOC "Malloc"
+
 typedef struct s_pipex
 {
 	int		pipe[2];
@@ -32,5 +43,12 @@ typedef struct s_pipex
 	char	**cmd1;
 	char	**cmd2;
 }	t_pipex;
+
+void	paths(t_pipex *p, char **envp);
+void	commands(t_pipex *p, char **argv);
+void	handle_perror(char *error, int errcode);
+void	do_fork(t_pipex *p, char **envp);
+void	close_pipes(t_pipex *p, int end);
+void	free_strs(t_pipex *p);
 
 #endif

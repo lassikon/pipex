@@ -3,6 +3,8 @@ CFLAGS = -Wall -Wextra -Werror
 
 SOURCES =	pipex.c \
 			parsing.c \
+			free_and_error.c \
+			fork.c
 
 NAME = pipex
 HEADER = pipex.h
