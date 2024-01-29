@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:41:39 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/01/29 16:14:40 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/01/29 21:22:42 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,25 @@ void	close_pipes(t_pipex *p, int end)
 		handle_perror(p, ERROR_PIPE, 1, 1);
 }
 
+void	init_struct(t_pipex *p)
+{
+	p->infile = 0;
+	p->outfile = 0;
+	p->paths = NULL;
+	p->cmd1 = NULL;
+	p->cmd2 = NULL;
+	p->pid_one = 0;
+	p->pid_two = 0;
+	p->status = 0;
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	p;
 
 	if (argc != 5)
 		return (1);
+	init_struct(&p);
 	if (pipe(p.pipe) < 0)
 		handle_perror(&p, ERROR_PIPE, 1, 1);
 	paths(&p, envp);

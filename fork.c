@@ -6,65 +6,11 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 14:49:00 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/01/29 16:38:24 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/01/29 20:58:59 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-/* static void	child_one(t_pipex *p, char **envp)
-{
-	int		i;
-	char	*cmd_path;
-
-	i = 0;
-	if (dup2(p->infile, STDIN_FILENO) < 0)
-		handle_perror(p, ERROR_DUP, 1, 1);
-	if (dup2(p->pipe[1], STDOUT_FILENO) < 0)
-		handle_perror(p, ERROR_DUP, 1, 1);
-	close_pipes(p, 2);
-	while (p->paths[i])
-	{
-		cmd_path = ft_strjoin(p->paths[i], p->cmd1[0]);
-		if (execve(cmd_path, p->cmd1, envp) < 0)
-		{
-			free(cmd_path);
-			handle_perror(p, ERROR_EXECVE, 1, 1);
-		}
-		free(cmd_path);
-		i++;
-	}
-	if (execve(p->cmd1[0], p->cmd1, envp) < 0)
-		handle_perror(p, ERROR_EXECVE, 1, 1);
-	handle_perror(p, ERROR_CMD, 127, 1);
-}
-
-static void	child_two(t_pipex *p, char **envp)
-{
-	int		i;
-	char	*cmd_path;
-
-	i = 0;
-	if (dup2(p->pipe[0], STDIN_FILENO) < 0)
-		handle_perror(p, ERROR_DUP, 1, 1);
-	if (dup2(p->outfile, STDOUT_FILENO) < 0)
-		handle_perror(p, ERROR_DUP, 1, 1);
-	close_pipes(p, 2);
-	while (p->paths[i])
-	{
-		cmd_path = ft_strjoin(p->paths[i], p->cmd2[0]);
-		if (execve(cmd_path, p->cmd2, envp) < 0)
-		{
-			free(cmd_path);
-			handle_perror(p, ERROR_EXECVE, 1, 1);
-		}
-		free(cmd_path);
-		i++;
-	}
-	if (execve(p->cmd2[0], p->cmd2, envp) < 0)
-		handle_perror(p, ERROR_EXECVE, 1, 1);
-	handle_perror(p, ERROR_CMD, 127, 1);
-} */
 
 static void	child_one(t_pipex *p, char **argv, char **envp)
 {
