@@ -6,42 +6,62 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 13:45:47 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/01/26 15:33:26 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/01/29 16:19:01 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+static void	free_paths(t_pipex *p)
+{
+	int	i;
+
+	i = 0;
+	while (p->paths[i])
+	{
+		free(p->paths[i]);
+		i++;
+	}
+	free(p->paths);
+}
+
 void	free_strs(t_pipex *p)
 {
+	int	i;
+
+	i = 0;
 	if (p->paths)
-	{
-		while (*p->paths)
-		{
-			free(*p->paths);
-			p->paths++;
-		}
-	}
+		free_paths(p);
 	if (p->cmd1)
 	{
-		while (*p->cmd1)
+		while (p->cmd1[i])
 		{
-			free(*p->cmd1);
-			p->cmd1++;
+			free(p->cmd1[i]);
+			i++;
 		}
+		free(p->cmd1);
 	}
+	i = 0;
 	if (p->cmd2)
 	{
-		while (*p->cmd2)
+		while (p->cmd2[i])
 		{
-			free(*p->cmd2);
-			p->cmd2++;
+			free(p->cmd2[i]);
+			i++;
 		}
+		free(p->cmd2);
 	}
 }
 
-void	handle_perror(char *error, int errcode)
+void	handle_perror(t_pipex *p, char *error, int errcode, int do_exit)
 {
 	perror(error);
-	exit(errcode);
+	if (do_exit)
+	{
+		free_strs(p);
+		close(p->infile);
+		close(p->outfile);
+		exit(errcode);
+	}
 }
+

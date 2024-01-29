@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:41:35 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/01/26 15:34:32 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/01/29 16:14:46 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define ERROR_CLOSE "Close"
 # define ERROR_PATH "Path"
 # define ERROR_MALLOC "Malloc"
+# define ERROR_EXECVE "Execve() Failed"
 
 typedef struct s_pipex
 {
@@ -46,8 +47,9 @@ typedef struct s_pipex
 
 void	paths(t_pipex *p, char **envp);
 void	commands(t_pipex *p, char **argv);
-void	handle_perror(char *error, int errcode);
-void	do_fork(t_pipex *p, char **envp);
+void	handle_perror(t_pipex *p, char *error, int errcode, int do_exit);
+void	error_message(char *error);
+void	do_fork(t_pipex *p, char **argv, char **envp);
 void	close_pipes(t_pipex *p, int end);
 void	free_strs(t_pipex *p);
 
