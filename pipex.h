@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:41:35 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/01/30 12:51:50 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/01/30 15:35:51 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 # define ERROR_PIPE "Pipe"
 # define ERROR_CMD "Command not found.\n"
 # define ERROR_FORK "Fork"
-# define ERROR_DUP "Dup2"
 # define ERROR_CLOSE "Close"
 # define ERROR_PATH "Path"
 # define ERROR_MALLOC "Malloc"

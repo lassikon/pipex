@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:50:27 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/01/30 14:56:18 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/01/30 15:34:17 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	paths(t_pipex *p, char **envp)
 		if (!ft_strncmp(*envp, "PATH", 4))
 		{
 			paths = ft_split(*envp + 5, ':');
+			if (paths == NULL)
+				handle_perror(p, ERROR_MALLOC, 1, 1);
 			p->paths = paths;
 			return ;
 		}
