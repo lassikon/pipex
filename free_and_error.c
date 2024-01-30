@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 13:45:47 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/01/29 16:19:01 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/01/30 14:47:59 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,3 @@ void	handle_perror(t_pipex *p, char *error, int errcode, int do_exit)
 		exit(errcode);
 	}
 }
-

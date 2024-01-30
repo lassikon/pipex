@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:41:35 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/01/29 16:14:46 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/01/30 12:51:50 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ typedef struct s_pipex
 	char	**paths;
 	char	**cmd1;
 	char	**cmd2;
+	char	**argv;
+	char	**envp;
 }	t_pipex;
 
 void	paths(t_pipex *p, char **envp);

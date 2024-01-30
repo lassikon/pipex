@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 14:49:00 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/01/29 20:58:59 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/01/30 14:48:50 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	child_one(t_pipex *p, char **argv, char **envp)
 {
 	int		i;
 	char	*cmd_path;
+	char	*cmd_one;
 
 	p->infile = open(argv[1], O_RDONLY);
 	if (p->infile < 0)
@@ -26,14 +27,16 @@ static void	child_one(t_pipex *p, char **argv, char **envp)
 	if (dup2(p->pipe[1], STDOUT_FILENO) < 0)
 		handle_perror(p, ERROR_DUP, 1, 1);
 	close_pipes(p, 2);
+	cmd_one = ft_strjoin("//", p->cmd1[0]);
 	while (p->paths[i])
 	{
-		cmd_path = ft_strjoin(p->paths[i], p->cmd1[0]);
+		cmd_path = ft_strjoin(p->paths[i], cmd_one);
 		execve(cmd_path, p->cmd1, envp);
 		free(cmd_path);
 		i++;
 	}
 	execve(p->cmd1[0], p->cmd1, envp);
+	free(cmd_one);
 	handle_perror(p, ERROR_CMD, 127, 1);
 }
 
@@ -41,6 +44,7 @@ static void	child_two(t_pipex *p, char **argv, char **envp)
 {
 	int		i;
 	char	*cmd_path;
+	char	*cmd_two;
 
 	p->outfile = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (p->outfile < 0)
@@ -51,14 +55,16 @@ static void	child_two(t_pipex *p, char **argv, char **envp)
 	if (dup2(p->outfile, STDOUT_FILENO) < 0)
 		handle_perror(p, ERROR_DUP, 1, 1);
 	close_pipes(p, 2);
+	cmd_two = ft_strjoin("//", p->cmd2[0]);
 	while (p->paths[i])
 	{
-		cmd_path = ft_strjoin(p->paths[i], p->cmd2[0]);
+		cmd_path = ft_strjoin(p->paths[i], cmd_two);
 		execve(cmd_path, p->cmd2, envp);
 		free(cmd_path);
 		i++;
 	}
 	execve(p->cmd2[0], p->cmd2, envp);
+	free(cmd_two);
 	handle_perror(p, ERROR_CMD, 127, 1);
 }
 
