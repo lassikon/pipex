@@ -6,65 +6,59 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 14:49:00 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/01/30 15:38:37 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/01/31 16:54:28 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static void	child_one(t_pipex *p, char **argv, char **envp)
+static void	execve_with_path(t_pipex *p, char **cmd, char **envp)
 {
 	int		i;
 	char	*cmd_path;
 	char	*cmd_one;
 
-	p->infile = open(argv[1], O_RDONLY);
-	if (p->infile < 0)
-		handle_perror(p, ERROR_INFILE, 1, 1);
 	i = 0;
-	dup2(p->infile, STDIN_FILENO);
-	dup2(p->pipe[1], STDOUT_FILENO);
-	close_pipes(p, 2);
-	cmd_one = ft_strjoin("//", p->cmd1[0]);
+	cmd_one = ft_strjoin("/", cmd[0]);
 	if (cmd_one == NULL)
 		handle_perror(p, ERROR_MALLOC, 1, 1);
 	while (p->paths[i])
 	{
 		cmd_path = ft_strjoin(p->paths[i], cmd_one);
-		execve(cmd_path, p->cmd1, envp);
+		execve(cmd_path, cmd, envp);
 		free(cmd_path);
 		i++;
 	}
-	execve(p->cmd1[0], p->cmd1, envp);
 	free(cmd_one);
+}
+
+static void	child_one(t_pipex *p, char **argv, char **envp)
+{
+	p->infile = open(argv[1], O_RDONLY);
+	if (p->infile < 0)
+		handle_perror(p, ERROR_INFILE, 0, 1);
+	dup2(p->infile, STDIN_FILENO);
+	dup2(p->pipe[1], STDOUT_FILENO);
+	close_pipes(p, 2);
+	if (p->cmd1[0][0] == '/' || p->cmd1[0][0] == '.')
+		execve(p->cmd1[0], p->cmd1, envp);
+	else
+		execve_with_path(p, p->cmd1, envp);
 	handle_perror(p, ERROR_CMD, 127, 1);
 }
 
 static void	child_two(t_pipex *p, char **argv, char **envp)
 {
-	int		i;
-	char	*cmd_path;
-	char	*cmd_two;
-
 	p->outfile = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (p->outfile < 0)
 		handle_perror(p, ERROR_OUTFILE, 1, 1);
-	i = 0;
 	dup2(p->pipe[0], STDIN_FILENO);
 	dup2(p->outfile, STDOUT_FILENO);
 	close_pipes(p, 2);
-	cmd_two = ft_strjoin("//", p->cmd2[0]);
-	if (cmd_two == NULL)
-		handle_perror(p, ERROR_MALLOC, 1, 1);
-	while (p->paths[i])
-	{
-		cmd_path = ft_strjoin(p->paths[i], cmd_two);
-		execve(cmd_path, p->cmd2, envp);
-		free(cmd_path);
-		i++;
-	}
-	execve(p->cmd2[0], p->cmd2, envp);
-	free(cmd_two);
+	if (p->cmd2[0][0] == '/' || p->cmd2[0][0] == '.')
+		execve(p->cmd2[0], p->cmd2, envp);
+	else
+		execve_with_path(p, p->cmd2, envp);
 	handle_perror(p, ERROR_CMD, 127, 1);
 }
 
