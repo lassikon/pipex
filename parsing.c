@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:50:27 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/01/31 15:26:40 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/01/31 22:01:52 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 void	paths(t_pipex *p, char **envp)
 {
-	int		i;
 	char	**paths;
 
-	i = 0;
 	if (envp != NULL)
 	{
 		while (*envp)
