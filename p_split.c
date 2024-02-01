@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:29:29 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/01/31 22:06:19 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/02/01 11:13:28 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ static void	init_quotes(t_quotes *q)
 {
 	q->quote = 0;
 	q->quotes_exist = 0;
-	q->first = -1;
-	q->last = -1;
+	q->start = -1;
+	q->end = -1;
 	q->substr_count = 0;
 	q->quote_len = 0;
 }
@@ -41,17 +41,17 @@ static void	find_quote_indexes(t_quotes *q, char *s)
 	{
 		if (s[i] == q->quote && s[i - 1] != '\\')
 		{
-			if (q->first == -1)
-				q->first = i;
+			if (q->start == -1)
+				q->start = i;
 			else
 			{
-				q->last = i;
+				q->end = i;
 				q->quotes_exist = 1;
 			}
 		}
 		i++;
 	}
-	q->quote_len = q->last - q->first - 1;
+	q->quote_len = q->end - q->start - 1;
 }
 
 static void	find_quotes(t_quotes *q, char *s)
@@ -84,31 +84,15 @@ static void	substr_count_with_quotes(t_quotes *q, char *s)
 	in_substr = 0;
 	while (s[i] != '\0')
 	{
-		if (i == q->first)
+		if (q->quotes_exist)
 		{
-			while (i <= q->last)
-				i++;
-			q->substr_count++;
+			if (i == q->start)
+			{
+				in_substr = 0;
+				i = q->end;
+				q->substr_count++;
+			}
 		}
-		if (s[i] == ' ')
-			in_substr = 0;
-		else if (in_substr == 0)
-		{
-			in_substr = 1;
-			q->substr_count++;
-		}
-		i++;
-	}
-}
-
-static void	substr_count_with_spaces(t_quotes *q, char *s)
-{
-	int	i;
-	int	in_substr;
-
-	i = 0;
-	while (s[i] != '\0')
-	{
 		if (s[i] == ' ')
 			in_substr = 0;
 		else if (in_substr == 0)
@@ -141,7 +125,7 @@ static int	array_creator(t_quotes *q, char *s, char **str_array)
 	{
 		while (s[i] == ' ')
 			i++;
-		if (i == q->first)
+		if (i == q->start)
 		{
 			str_array[k] = ft_substr(s, i + 1, q->quote_len);
 			if (!str_array[k])
@@ -149,7 +133,7 @@ static int	array_creator(t_quotes *q, char *s, char **str_array)
 				free_array(str_array, k);
 				return (0);
 			}
-			i = q->last + 1;
+			i = q->end + 1;
 		}
 		else if (s[i] != ' ' && s[i] != '\0')
 		{
@@ -176,10 +160,7 @@ char	**p_split(char *s)
 	init_quotes(&q);
 	find_quotes(&q, s);
 	find_quote_indexes(&q, s);
-	if (q.quote == 0)
-		substr_count_with_spaces(&q, s);
-	else
-		substr_count_with_quotes(&q, s);
+	substr_count_with_quotes(&q, s);
 	if (s == NULL)
 		return (NULL);
 	str_array = (char **)malloc(sizeof(char *) * (q.substr_count + 1));

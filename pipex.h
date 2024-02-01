@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:41:35 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/01/31 21:36:21 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/02/01 10:51:39 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ typedef struct s_quotes
 {
 	char	quote;
 	int		quotes_exist;
-	int		first;
-	int		last;
+	int		start;
+	int		end;
 	int		substr_count;
 	int		quote_len;
 }	t_quotes;
