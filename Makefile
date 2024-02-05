@@ -5,7 +5,8 @@ SOURCES =	pipex.c \
 			parsing.c \
 			free_and_error.c \
 			fork.c \
-			p_split.c
+			p_split.c \
+			p_split_utils.c
 
 NAME = pipex
 HEADER = pipex.h
