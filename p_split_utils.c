@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 12:07:23 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/02/06 11:33:00 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/02/06 17:52:06 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,40 +32,54 @@ static int	substr_len(char *s, char c, char q)
 	return (i);
 }
 
+static int	substr_quotes(t_quotes *q, char **array, char *src, int k)
+{
+	array[k] = ft_substr(src, q->start + 1, q->quote_len);
+	if (!array[k])
+	{
+		free_array(array, k);
+		return (0);
+	}
+	q->index = q->end + 1;
+	return (1);
+}
+
+static int	substr_spaces(t_quotes *q, char **array, char *src, int k)
+{
+	int	len;
+
+	len = substr_len(&src[q->index], ' ', q->quote);
+	array[k] = ft_substr(src, q->index, len);
+	if (!array[k])
+	{
+		free_array(array, k);
+		return (0);
+	}
+	q->index += len;
+	return (1);
+}
+
 int	array_creator(t_quotes *q, char *s, char **str_array)
 {
-	int	i;
 	int	k;
 
-	i = 0;
 	k = 0;
-	while (s[i] != '\0' && k < q->substr_count)
+	while (s[q->index] != '\0' && k < q->substr_count)
 	{
-		while (s[i] == ' ')
-			i++;
-		if (q->quotes_exist && i == q->start)
+		while (s[q->index] == ' ')
+			q->index++;
+		if (q->quotes_exist && q->index == q->start)
 		{
-			str_array[k] = ft_substr(s, i + 1, q->quote_len);
-			if (!str_array[k])
-			{
-				free_array(str_array, k);
+			if (!substr_quotes(q, str_array, s, k))
 				return (0);
-			}
-			i = q->end + 1;
 		}
-		else if (s[i] != ' ' && s[i] != '\0')
+		else if (s[q->index] != ' ' && s[q->index] != '\0')
 		{
-			str_array[k] = ft_substr(s, i, substr_len(&s[i], ' ', q->quote));
-			if (!str_array[k])
-			{
-				free_array(str_array, k);
+			if (!substr_spaces(q, str_array, s, k))
 				return (0);
-			}
-			i = i + substr_len(&s[i], ' ', q->quote);
 		}
 		k++;
 	}
 	str_array[k] = NULL;
 	return (1);
 }
-// if '\' is found, remove it from the string

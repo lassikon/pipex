@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:41:39 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/01/30 16:26:26 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/02/06 17:50:44 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	close_pipes(t_pipex *p, int end)
 		handle_perror(p, ERROR_PIPE, 1, 1);
 }
 
-void	init_struct(t_pipex *p, char **argv, char **envp)
+void	init_struct(t_pipex *p, char **argv)
 {
 	p->infile = 0;
 	p->outfile = 0;
@@ -34,7 +34,6 @@ void	init_struct(t_pipex *p, char **argv, char **envp)
 	p->pid_two = 0;
 	p->status = 0;
 	p->argv = argv;
-	p->envp = envp;
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -42,12 +41,15 @@ int	main(int argc, char **argv, char **envp)
 	t_pipex	p;
 
 	if (argc != 5)
+	{
+		ft_putstr_fd(ERROR_INPUT, 1);
 		return (1);
-	init_struct(&p, argv, envp);
+	}
+	init_struct(&p, argv);
 	if (pipe(p.pipe) < 0)
 		handle_perror(&p, ERROR_PIPE, 1, 1);
 	paths(&p, envp);
-	commands(&p, argv);
+	commands(&p);
 	do_fork(&p, argv, envp);
 	close_pipes(&p, 2);
 	waitpid(p.pid_one, &p.status, 0);

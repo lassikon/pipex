@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 15:29:29 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/02/01 12:09:19 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/02/06 14:42:50 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void	init_quotes(t_quotes *q)
 	q->end = -1;
 	q->substr_count = 0;
 	q->quote_len = 0;
+	q->index = 0;
 }
 
 static void	find_quote_indexes(t_quotes *q, char *s)
@@ -102,7 +103,8 @@ char	**p_split(char *s)
 	str_array = NULL;
 	init_quotes(&q);
 	find_quotes(&q, s);
-	find_quote_indexes(&q, s);
+	if (q.quote)
+		find_quote_indexes(&q, s);
 	substr_count_with_quotes(&q, s);
 	if (s == NULL)
 		return (NULL);

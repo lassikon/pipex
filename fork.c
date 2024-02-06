@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 14:49:00 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/02/06 11:41:00 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/02/06 17:23:45 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static void	execve_with_path(t_pipex *p, char **cmd, char **envp)
 	while (p->paths[i])
 	{
 		cmd_path = ft_strjoin(p->paths[i], cmd_one);
-		remove_path_backslash(cmd_path);
 		remove_array_backslash(cmd);
 		execve(cmd_path, cmd, envp);
 		free(cmd_path);
@@ -42,9 +41,11 @@ static void	child_one(t_pipex *p, char **argv, char **envp)
 	dup2(p->infile, STDIN_FILENO);
 	dup2(p->pipe[1], STDOUT_FILENO);
 	close_pipes(p, 2);
-	if (p->cmd1[0][0] == '/' || p->cmd1[0][0] == '.')
+	remove_path_backslash(p->cmd1[0]);
+	if (ft_strchr(p->cmd1[0], '/') || p->cmd1[0][0] == '.')
 	{
-		remove_path_backslash(p->cmd1[0]);
+		if (access(p->cmd1[0], X_OK) == -1)
+			handle_perror(p, ERROR_CMD, 126, 1);
 		execve(p->cmd1[0], p->cmd1, envp);
 	}
 	else
@@ -60,9 +61,11 @@ static void	child_two(t_pipex *p, char **argv, char **envp)
 	dup2(p->pipe[0], STDIN_FILENO);
 	dup2(p->outfile, STDOUT_FILENO);
 	close_pipes(p, 2);
-	if (p->cmd2[0][0] == '/' || p->cmd2[0][0] == '.')
+	remove_path_backslash(p->cmd2[0]);
+	if (ft_strchr(p->cmd2[0], '/') || p->cmd2[0][0] == '.')
 	{
-		remove_path_backslash(p->cmd2[0]);
+		if (access(p->cmd2[0], X_OK) == -1)
+			handle_perror(p, ERROR_CMD, 126, 1);
 		execve(p->cmd2[0], p->cmd2, envp);
 	}
 	else
