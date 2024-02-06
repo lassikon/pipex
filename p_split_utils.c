@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 12:07:23 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/02/05 14:18:37 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/02/06 11:33:00 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,4 @@ int	array_creator(t_quotes *q, char *s, char **str_array)
 	str_array[k] = NULL;
 	return (1);
 }
-// if '/' is found, remove it from the string
+// if '\' is found, remove it from the string

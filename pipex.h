@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:41:35 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/02/01 12:11:54 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/02/06 11:41:48 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,7 @@ void	free_strs(t_pipex *p);
 char	**p_split(char *s);
 void	init_struct(t_pipex *p, char **argv, char **envp);
 int		array_creator(t_quotes *q, char *s, char **str_array);
+void	remove_array_backslash(char **cmd);
+void	remove_path_backslash(char *cmd_path);
 
 #endif
