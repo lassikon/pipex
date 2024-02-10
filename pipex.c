@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:41:39 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/02/06 17:50:44 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/02/10 11:33:31 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc != 5)
 	{
-		ft_putstr_fd(ERROR_INPUT, 1);
+		ft_putstr_fd(ERROR_INPUT, 2);
 		return (1);
 	}
 	init_struct(&p, argv);

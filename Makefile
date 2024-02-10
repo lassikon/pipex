@@ -10,7 +10,6 @@ SOURCES =	pipex.c \
 
 NAME = pipex
 HEADER = pipex.h
-BONUS_NAME = checker
 
 LIBFT_DIR = libft
 LDFLAGS = -L$(LIBFT_DIR) -lft

@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:50:27 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/02/06 14:16:38 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/02/08 12:09:40 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	commands(t_pipex *p)
 		handle_perror(p, ERROR_CMD, 1, 1);
 }
 
-void	remove_array_backslash(char **cmd)
+void	remove_backslash(char **cmd)
 {
 	int		i;
 	int		j;
@@ -72,27 +72,5 @@ void	remove_array_backslash(char **cmd)
 			j++;
 		}
 		k++;
-	}
-}
-
-void	remove_path_backslash(char *cmd_path)
-{
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	while (cmd_path[i])
-	{
-		if (cmd_path[i] == '\\')
-			i++;
-		cmd_path[j] = cmd_path[i];
-		i++;
-		j++;
-	}
-	while (cmd_path[j])
-	{
-		cmd_path[j] = '\0';
-		j++;
 	}
 }
